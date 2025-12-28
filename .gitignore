@@ -1,0 +1,53 @@
+# Binaires
+go-scaffold
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Fichiers de test
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Dépendances des vendeurs
+/vendor/
+
+# Fichiers Go
+*.sum
+
+# Fichiers de l'IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Fichiers de build
+dist/
+build/
+
+# Fichiers d'environnement
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Fichiers temporaires
+tmp/
+temp/
+
+# Fichiers de base de données
+*.db
+*.sqlite
+*.sqlite3
+
+# Fichiers de backup
+*.bak
+*.backup

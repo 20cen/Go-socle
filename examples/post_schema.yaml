@@ -1,0 +1,129 @@
+# Schéma pour la table posts
+table: posts
+model: Post
+
+columns:
+  - name: id
+    type: uuid
+    primary: true
+    nullable: false
+
+  - name: user_id
+    type: uuid
+    nullable: false
+    comment: "ID de l'auteur du post"
+
+  - name: title
+    type: string
+    size: 255
+    nullable: false
+
+  - name: slug
+    type: string
+    size: 255
+    nullable: false
+    unique: true
+
+  - name: content
+    type: text
+    nullable: false
+
+  - name: excerpt
+    type: string
+    size: 500
+    nullable: true
+
+  - name: featured_image
+    type: string
+    size: 500
+    nullable: true
+
+  - name: status
+    type: string
+    size: 50
+    nullable: false
+    default: "draft"
+
+  - name: view_count
+    type: integer
+    nullable: false
+    default: 0
+
+  - name: published_at
+    type: timestamp
+    nullable: true
+
+  - name: created_at
+    type: timestamp
+    nullable: false
+
+  - name: updated_at
+    type: timestamp
+    nullable: false
+
+relations:
+  # Un post appartient à un utilisateur
+  - type: belongs_to
+    model: User
+    foreign_key: user_id
+    references: id
+
+  # Un post peut avoir plusieurs commentaires
+  - type: has_many
+    model: Comment
+    foreign_key: post_id
+
+  # Un post peut avoir plusieurs tags (many-to-many)
+  - type: many_to_many
+    model: Tag
+    pivot_table: post_tags
+    foreign_key: post_id
+    related_key: tag_id
+
+indexes:
+  - name: idx_posts_user_id
+    columns: [user_id]
+    unique: false
+
+  - name: idx_posts_slug
+    columns: [slug]
+    unique: true
+
+  - name: idx_posts_status
+    columns: [status]
+    unique: false
+
+  - name: idx_posts_published_at
+    columns: [published_at]
+    unique: false
+
+validations:
+  - field: title
+    rules:
+      required: true
+      min: 5
+      max: 255
+
+  - field: slug
+    rules:
+      required: true
+      min: 5
+      max: 255
+
+  - field: content
+    rules:
+      required: true
+      min: 10
+
+  - field: excerpt
+    rules:
+      max: 500
+
+  - field: status
+    rules:
+      required: true
+      in: [draft, published, archived]
+
+  - field: featured_image
+    rules:
+      url: true

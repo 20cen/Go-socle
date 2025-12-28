@@ -1,0 +1,197 @@
+# Exemple de schéma complet pour la table users
+# Ce fichier montre toutes les fonctionnalités disponibles
+
+table: users
+model: User
+
+# Définition des colonnes
+columns:
+  # ID primaire
+  - name: id
+    type: uuid
+    primary: true
+    auto_increment: false
+    nullable: false
+    comment: "Identifiant unique de l'utilisateur"
+
+  # Informations de base
+  - name: name
+    type: string
+    size: 255
+    nullable: false
+    comment: "Nom complet de l'utilisateur"
+
+  - name: email
+    type: string
+    size: 255
+    nullable: false
+    unique: true
+    comment: "Adresse email unique"
+
+  - name: password
+    type: string
+    size: 255
+    nullable: false
+    comment: "Mot de passe hashé"
+
+  # Rôle et statut
+  - name: role
+    type: string
+    size: 50
+    nullable: false
+    default: "user"
+    comment: "Rôle de l'utilisateur (user, admin, moderator)"
+
+  - name: status
+    type: string
+    size: 50
+    nullable: false
+    default: "active"
+    comment: "Statut du compte (active, inactive, suspended)"
+
+  # Informations supplémentaires
+  - name: phone
+    type: string
+    size: 20
+    nullable: true
+    comment: "Numéro de téléphone"
+
+  - name: avatar
+    type: string
+    size: 500
+    nullable: true
+    comment: "URL de l'avatar"
+
+  - name: bio
+    type: text
+    nullable: true
+    comment: "Biographie de l'utilisateur"
+
+  - name: date_of_birth
+    type: date
+    nullable: true
+    comment: "Date de naissance"
+
+  - name: email_verified
+    type: boolean
+    nullable: false
+    default: false
+    comment: "Email vérifié ou non"
+
+  - name: last_login_at
+    type: timestamp
+    nullable: true
+    comment: "Date de dernière connexion"
+
+  # Timestamps
+  - name: created_at
+    type: timestamp
+    nullable: false
+    comment: "Date de création"
+
+  - name: updated_at
+    type: timestamp
+    nullable: false
+    comment: "Date de mise à jour"
+
+  - name: deleted_at
+    type: timestamp
+    nullable: true
+    comment: "Date de suppression (soft delete)"
+
+# Relations avec d'autres tables
+relations:
+  # Un utilisateur peut avoir plusieurs posts
+  - type: has_many
+    model: Post
+    foreign_key: user_id
+
+  # Un utilisateur peut avoir plusieurs commentaires
+  - type: has_many
+    model: Comment
+    foreign_key: user_id
+
+  # Un utilisateur a un profil
+  - type: has_one
+    model: Profile
+    foreign_key: user_id
+
+  # Un utilisateur peut avoir plusieurs rôles (many-to-many)
+  - type: many_to_many
+    model: Role
+    pivot_table: user_roles
+    foreign_key: user_id
+    related_key: role_id
+
+# Index pour optimiser les recherches
+indexes:
+  # Index unique sur l'email
+  - name: idx_users_email
+    columns: [email]
+    unique: true
+
+  # Index sur le statut pour les recherches fréquentes
+  - name: idx_users_status
+    columns: [status]
+    unique: false
+
+  # Index composé pour les recherches par rôle et statut
+  - name: idx_users_role_status
+    columns: [role, status]
+    unique: false
+
+  # Index sur created_at pour trier par date
+  - name: idx_users_created_at
+    columns: [created_at]
+    unique: false
+
+# Règles de validation pour les requests
+validations:
+  # Validation du nom
+  - field: name
+    rules:
+      required: true
+      min: 3
+      max: 255
+
+  # Validation de l'email
+  - field: email
+    rules:
+      required: true
+      email: true
+      max: 255
+
+  # Validation du mot de passe
+  - field: password
+    rules:
+      required: true
+      min: 8
+      max: 255
+
+  # Validation du rôle
+  - field: role
+    rules:
+      required: true
+      in: [user, admin, moderator, super_admin]
+
+  # Validation du statut
+  - field: status
+    rules:
+      required: true
+      in: [active, inactive, suspended, banned]
+
+  # Validation du téléphone (optionnel)
+  - field: phone
+    rules:
+      max: 20
+
+  # Validation de l'URL de l'avatar
+  - field: avatar
+    rules:
+      url: true
+      max: 500
+
+  # Validation de la bio
+  - field: bio
+    rules:
+      max: 1000

@@ -1,0 +1,53 @@
+table: articles
+model: Article
+
+columns:
+  - name: id
+    type: uuid
+    primary: true
+    nullable: false
+
+  - name: titre
+    type: string
+    size: 255
+    nullable: false
+
+  - name: contenu
+    type: text
+    nullable: false
+
+  - name: auteur
+    type: string
+    size: 100
+    nullable: false
+
+  - name: publie
+    type: boolean
+    nullable: false
+    default: false
+
+  - name: created_at
+    type: timestamp
+    nullable: false
+
+  - name: updated_at
+    type: timestamp
+    nullable: false
+
+validations:
+  - field: titre
+    rules:
+      required: true
+      min: 5
+      max: 255
+
+  - field: contenu
+    rules:
+      required: true
+      min: 50
+
+  - field: auteur
+    rules:
+      required: true
+      min: 3
+      max: 100
