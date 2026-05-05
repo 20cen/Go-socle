@@ -271,7 +271,8 @@ go-scaffold init mon-api
 
 ---
 
-**Version** : 1.0.0  
-**Date** : Novembre 2024  
+**Version** : 1.0.0 
+**Développement** : Vincent Gérard SALABANZI
+**Date** : Décembre 2025  
 **Licence** : MIT  
 **Support** : Ouvrez une issue sur GitHub
