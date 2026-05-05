@@ -1,6 +1,6 @@
 # Go-socle# 📦 Go-Scaffold - Package complet
 
-Bienvenue ! Vous avez téléchargé **go-scaffold**, un générateur de code automatique pour Go similaire à Laravel Artisan.
+Bienvenue !**Go-scaffold**, un générateur de code automatique pour Go similaire à Laravel Artisan.
 
 ## 📁 Fichiers disponibles
 
